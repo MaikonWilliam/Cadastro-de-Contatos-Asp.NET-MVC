@@ -12,9 +12,17 @@ namespace MySiteMVC.Controllers
         {
             _contatoRepositorio = contatoRepositorio;
         }
+
         public IActionResult Index()
         {
             var list =  _contatoRepositorio.BuscarTodos();
+            return View(list);
+        }
+
+        [HttpPost]
+        public IActionResult Index(string name)
+        {
+            var list = _contatoRepositorio.BuscarTodos(name);
             return View(list);
         }
 
@@ -23,23 +31,36 @@ namespace MySiteMVC.Controllers
             return View();
         }
 
-        public IActionResult Editar()
+        [HttpPost]
+        public IActionResult Criar(ContatoModel contato)
         {
+            _contatoRepositorio.Adicionar(contato);
+            return Redirect("Index");
+        }
+
+        public IActionResult Editar(int id)
+        {
+            var contato = _contatoRepositorio.ListarporId(id);
+            return View(contato);
+        }
+        
+        [HttpPost]
+        public IActionResult Alterar(ContatoModel contato)
+        {
+            _contatoRepositorio.Alterar(contato);
+            return Redirect("Index");
+        }
+
+        public IActionResult ApagarConfirmacao()
+        {
+           
             return View();
         }
-        public IActionResult ApagarConfirmacao()
+        public IActionResult ApagarConfirmação(int id) 
         {
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Criar(ContatoModel contato)
-        {
-            
-            _contatoRepositorio.Adicionar(contato);
-           
-           
-            return Redirect("Index");
-        }
+       
     }
 }

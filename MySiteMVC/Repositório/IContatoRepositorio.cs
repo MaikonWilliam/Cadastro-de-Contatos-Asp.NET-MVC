@@ -6,6 +6,11 @@ namespace MySiteMVC.Repositório
     public interface IContatoRepositorio
     {
         List<ContatoModel> BuscarTodos();
-        ContatoModel Adicionar(ContatoModel contato); 
+        List<ContatoModel> BuscarTodos(string name);
+        ContatoModel Adicionar(ContatoModel contato);
+        ContatoModel ListarporId(int id);
+        ContatoModel Alterar(ContatoModel contato);
+
+
     }
 }
