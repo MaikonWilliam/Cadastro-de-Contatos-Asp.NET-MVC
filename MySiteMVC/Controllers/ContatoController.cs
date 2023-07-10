@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using MySiteMVC.Data;
 using MySiteMVC.Models;
 using MySiteMVC.Repositório;
@@ -33,9 +34,25 @@ namespace MySiteMVC.Controllers
 
         [HttpPost]
         public IActionResult Criar(ContatoModel contato)
-        {
-            _contatoRepositorio.Adicionar(contato);
-            return Redirect("Index");
+        {    
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _contatoRepositorio.Adicionar(contato);                
+                    TempData["MensagemSucesso"] = "Contato cadastrado com sucesso!";
+                    return RedirectToAction("Index");
+                }
+
+                return View(contato);
+            }
+            catch (Exception error)
+            {
+                TempData["MensagemErro"] = "Ops! Não conseguimos cadastrar seu contato,tente novamente, detalhes do " +
+                $"erro: {error.Message}";
+                return RedirectToAction("Index");
+            }
+
         }
 
         public IActionResult Editar(int id)
@@ -47,19 +64,51 @@ namespace MySiteMVC.Controllers
         [HttpPost]
         public IActionResult Alterar(ContatoModel contato)
         {
-            _contatoRepositorio.Alterar(contato);
-            return Redirect("Index");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _contatoRepositorio.Alterar(contato);
+                    TempData["MensagemSucesso"] = "Contato Alterado com sucesso!";
+                    return RedirectToAction("Index");
+                  
+                }
+
+                return View("Editar", contato);
+            }
+            catch ( Exception error) 
+            {
+                 TempData["MensagemErro"] = "Ops! Não conseguimos alterar seu contato,tente novamente, detalhes do " + 
+                 $"erro: {error.Message}";
+                return RedirectToAction("Index");
+            }
         }
 
-        public IActionResult ApagarConfirmacao()
+        public IActionResult ApagarConfirmacao(int id)
         {
-           
-            return View();
+            var contato = _contatoRepositorio.ListarporId(id);
+            
+            return View(contato);
         }
-        public IActionResult ApagarConfirmação(int id) 
+
+        public IActionResult Apagar(int id)
         {
-            return View();
+            try
+            {
+                _contatoRepositorio.Apagar(id);
+                TempData["MensagemErro"] = "O contato foi excluído com sucesso!";
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                TempData["MensagemErro"] = $"Ops! Não foi possivel excluir o contato, detalhes: {ex.Message}";
+                return RedirectToAction("Index");
+            }
+
+            _contatoRepositorio.Apagar(id);
+           return RedirectToAction("Index");
         }
+        
 
        
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using MySiteMVC.Data;
 using MySiteMVC.Models;
 using System.Runtime.InteropServices;
@@ -33,6 +34,7 @@ namespace MySiteMVC.Repositório
         {
             return _bancoContext.Contatos.FirstOrDefault(o => o.Id == id);
         }
+
         public ContatoModel Alterar(ContatoModel contato)
         {
             var contatoDB = ListarporId(contato.Id);
@@ -45,6 +47,19 @@ namespace MySiteMVC.Repositório
             _bancoContext.Contatos.Update(contatoDB);
             _bancoContext.SaveChanges();
             return contatoDB;
+        }
+        public bool Apagar(int id)
+        {
+            var contatoDB = ListarporId(id);
+            if (contatoDB == null) throw new Exception("Houve um erro na exclusão do contato!");
+
+            
+                _bancoContext.Contatos.Remove(contatoDB);
+                _bancoContext.SaveChanges();
+                return true;
+            
+            
+            
         }
     }
 }

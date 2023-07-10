@@ -10,7 +10,7 @@ namespace MySiteMVC.Repositório
         ContatoModel Adicionar(ContatoModel contato);
         ContatoModel ListarporId(int id);
         ContatoModel Alterar(ContatoModel contato);
-
+        bool Apagar(int id);
 
     }
 }

@@ -11,14 +11,31 @@
     <br/>
     <div class="d-grid gap-2 d-md-flex justify-content-nd-start" >
         <a class="btn btn-primary " role="button" asp-action="Criar">Adicionar Contato</a>
-        <form method="post">
-            <input type="text" placeholder="Insira o nome do contato" name="name"/>
-            <input type="submit" value="Buscar" asp-action="Index"/>
+        <form  method="post">
+            <input class="Input-buscar" type="text" placeholder="Insira o nome do contato" name="name"/>
+            <input class="btn-Buscar" type="submit" value="Buscar" asp-action="Index"/>
         </form>     
      
     </div>
 
     <br/>
+    @if(TempData["MensagemSucesso"] != null)
+    {
+       <div class="alert alert-success" role="alert">
+       <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+       @TempData["MensagemSucesso"]
+       </div>
+        
+    }
+   
+    @if(TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+        @TempData["MensagemErro"]
+        </div>
+    }
+   <br/>
 
    <table class="table">
   <thead>
